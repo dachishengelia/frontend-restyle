@@ -5,6 +5,7 @@ import { Heart, ShoppingCart, CreditCard, Edit, Trash2, ThumbsUp, ThumbsDown } f
 
 import { AuthContext } from "../context/AuthContext.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
+import { toast } from "react-toastify";
 
 export default function ProductCard({
   p,
@@ -38,8 +39,13 @@ export default function ProductCard({
   const handleCartAction = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isInCart) removeFromCart(p._id);
-    else addToCart(p._id);
+    if (isInCart) {
+      removeFromCart(p._id);
+      toast.success("Removed from cart");
+    } else {
+      addToCart(p._id);
+      toast.success("Added to cart");
+    }
   };
 
   // Edit product
@@ -70,7 +76,7 @@ export default function ProductCard({
       window.location.href = res.data.url;
     } catch (err) {
       console.error("Payment failed:", err);
-      alert(err.response?.data?.message || "Payment failed");
+      toast.error(err.response?.data?.message || "Payment failed");
     }
   };
 
@@ -83,7 +89,7 @@ export default function ProductCard({
       await onDelete(p._id);
     } catch (err) {
       console.error("Failed to delete product:", err);
-      alert("Failed to delete product");
+      toast.error("Failed to delete product");
     }
   };
 
@@ -91,14 +97,24 @@ export default function ProductCard({
   const handleToggleFav = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onToggleFavProp) onToggleFavProp(p._id);
+    if (onToggleFavProp) {
+      onToggleFavProp(p._id);
+      if (isFav) {
+        toast.success("Removed from favorites");
+      } else {
+        toast.success("Added to favorites");
+      }
+    }
   };
 
   // Handle like
   const handleLike = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) return alert("Please log in to like");
+    if (!user) {
+      toast.error("Please log in to like");
+      return;
+    }
     try {
       const res = await axios.post(`/api/product-actions/${p._id}/like`, {}, {
         withCredentials: true
@@ -109,9 +125,9 @@ export default function ProductCard({
       setUserDisliked(false);
     } catch (err) {
       if (err.response?.status === 404) {
-        alert("Product not found");
+        toast.error("Product not found");
       } else {
-        alert("Server error");
+        toast.error("Server error");
       }
     }
   };
@@ -120,7 +136,10 @@ export default function ProductCard({
   const handleDislike = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (!user) return alert("Please log in to dislike");
+    if (!user) {
+      toast.error("Please log in to dislike");
+      return;
+    }
     try {
       const res = await axios.post(`/api/product-actions/${p._id}/dislike`, {}, {
         withCredentials: true
@@ -131,9 +150,9 @@ export default function ProductCard({
       setUserLiked(false);
     } catch (err) {
       if (err.response?.status === 404) {
-        alert("Product not found");
+        toast.error("Product not found");
       } else {
-        alert("Server error");
+        toast.error("Server error");
       }
     }
   };

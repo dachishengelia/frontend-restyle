@@ -202,6 +202,7 @@
 
 
 import React, { useEffect, useState, useContext } from "react";
+import { toast } from "react-toastify";
 import axios from "../axios.js";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
@@ -264,9 +265,10 @@ const AdminPanel = () => {
     try {
       await axios.delete(`/admin/users/${id}`);
       setUsers(users.filter((user) => user._id !== id));
+      toast.success("User deleted successfully");
     } catch (err) {
       console.error("Failed to delete user:", err);
-      alert("Failed to delete user");
+      toast.error("Failed to delete user");
     }
   };
 
@@ -274,9 +276,10 @@ const AdminPanel = () => {
     try {
       const res = await axios.patch(`/admin/users/${id}/role`, { role: newRole });
       setUsers(users.map((u) => (u._id === id ? res.data : u)));
+      toast.success("User role updated successfully");
     } catch (err) {
       console.error("Failed to update role:", err);
-      alert("Failed to update role");
+      toast.error("Failed to update role");
     }
   };
 
@@ -284,10 +287,10 @@ const AdminPanel = () => {
     try {
       await axios.delete(`/api/products/admin/${productId}`);
       setProducts(products.filter((product) => product._id !== productId));
-      alert("Product deleted successfully");
+      toast.success("Product deleted successfully");
     } catch (err) {
       console.error("Failed to delete product:", err.message);
-      alert("Failed to delete product");
+      toast.error("Failed to delete product");
     }
   };
 
@@ -295,10 +298,10 @@ const AdminPanel = () => {
     try {
       await axios.delete(`/api/cv/admin/${cvId}`);
       setCvs(cvs.filter((cv) => cv._id !== cvId));
-      alert("CV deleted successfully");
+      toast.success("CV deleted successfully");
     } catch (err) {
       console.error("Failed to delete CV:", err.message);
-      alert("Failed to delete CV");
+      toast.error("Failed to delete CV");
     }
   };
 

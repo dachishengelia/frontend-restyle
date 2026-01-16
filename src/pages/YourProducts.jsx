@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 import ProductCard from "../components/ProductCard";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function YourProducts({ toggleFav, cart, addToCart, removeFromCart }) {
   const { user } = useContext(AuthContext);
@@ -18,7 +19,7 @@ export default function YourProducts({ toggleFav, cart, addToCart, removeFromCar
       setProducts(res.data);
     } catch (err) {
       console.error("Failed to fetch seller products:", err.message);
-      alert("Failed to fetch seller products. Please try again later.");
+      toast.error("Failed to fetch seller products. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -28,10 +29,10 @@ export default function YourProducts({ toggleFav, cart, addToCart, removeFromCar
     try {
       await axios.delete(`/api/products/${productId}`);
       setProducts(products.filter((product) => product._id !== productId));
-      alert("Product deleted successfully");
+      toast.success("Product deleted successfully");
     } catch (err) {
       console.error("Failed to delete product:", err.message);
-      alert("Failed to delete product");
+      toast.error("Failed to delete product");
     }
   };
 

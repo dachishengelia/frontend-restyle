@@ -219,7 +219,7 @@ import { toast } from "react-toastify";
 import axios from "../axios.js";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
-import { Heart, MessageCircle, ShoppingCart, CreditCard, ThumbsUp, ThumbsDown, User, Star } from 'lucide-react';
+import { Heart, MessageCircle, ShoppingCart, CreditCard, ThumbsUp, ThumbsDown, User } from 'lucide-react';
 
 export default function ProductDetails({ cart, addToCart, removeFromCart }) {
   const { productId } = useParams();
@@ -302,12 +302,17 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
 
   // Add or remove product from cart
   const handleCartAction = () => {
-    if (!user) return alert("Please log in to add to cart");
+    if (!user) {
+      toast.error("Please log in to add to cart");
+      return;
+    }
 
     if (isInCart) {
       removeFromCart(productId);
+      toast.success("Removed from cart");
     } else {
       addToCart(productId);
+      toast.success("Added to cart");
     }
   };
 
@@ -331,13 +336,16 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
       window.location.href = res.data.url;
     } catch (err) {
       console.error("Payment failed:", err);
-      alert(err.response?.data?.message || "Payment failed");
+      toast.error(err.response?.data?.message || "Payment failed");
     }
   };
 
   // Comments
   const handleAddComment = async () => {
-    if (!user) return alert("Please log in to comment");
+    if (!user) {
+      toast.error("Please log in to comment");
+      return;
+    }
     if (!commentInput.trim()) return;
 
     try {
@@ -348,8 +356,10 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
       );
       setComments(res.data.comments);
       setCommentInput("");
+      toast.success("Comment added successfully");
     } catch (err) {
       console.error("Comment error:", err);
+      toast.error("Failed to add comment");
     }
   };
 
@@ -367,7 +377,10 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
   };
 
   const handleLike = async () => {
-    if (!user) return alert("Please log in to like");
+    if (!user) {
+      toast.error("Please log in to like");
+      return;
+    }
     try {
       const res = await axios.post(`/api/product-actions/${productId}/like`, {}, {
         withCredentials: true
@@ -378,15 +391,18 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
       setUserDisliked(false);
     } catch (err) {
       if (err.response?.status === 404) {
-        alert("Product not found");
+        toast.error("Product not found");
       } else {
-        alert("Server error");
+        toast.error("Server error");
       }
     }
   };
 
   const handleDislike = async () => {
-    if (!user) return alert("Please log in to dislike");
+    if (!user) {
+      toast.error("Please log in to dislike");
+      return;
+    }
     try {
       const res = await axios.post(`/api/product-actions/${productId}/dislike`, {}, {
         withCredentials: true
@@ -397,9 +413,9 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
       setUserLiked(false);
     } catch (err) {
       if (err.response?.status === 404) {
-        alert("Product not found");
+        toast.error("Product not found");
       } else {
-        alert("Server error");
+        toast.error("Server error");
       }
     }
   };

@@ -365,6 +365,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
 import { sendNewsletterSignup } from "../utils/emailService.js";
+import { toast } from "react-toastify";
 
 function setCookie(name, value, days) {
   let expires = "";
@@ -462,11 +463,11 @@ export default function Profile() {
     // Placeholder for password reset API
     try {
       // await axios.post("/api/auth/forgot-password", { email: resetForm.email, newPassword: resetForm.newPassword });
-      alert("Password reset requested. (API not implemented yet)");
+      toast.success("Password reset requested. (API not implemented yet)");
       setShowResetModal(false);
       setResetForm({ email: "", newPassword: "" });
     } catch (err) {
-      alert("Failed to reset password");
+      toast.error("Failed to reset password");
     }
   };
 
@@ -491,7 +492,7 @@ export default function Profile() {
       setProducts(res.data);
     } catch (err) {
       console.error("Failed to fetch seller products:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Failed to fetch seller products.");
+      toast.error(err.response?.data?.message || "Failed to fetch seller products.");
     } finally {
       setLoading(false);
     }
@@ -501,10 +502,10 @@ export default function Profile() {
     try {
       await axios.delete(`/api/products/${productId}`);
       setProducts(products.filter((p) => p._id !== productId));
-      alert("Product deleted successfully");
+      toast.success("Product deleted successfully");
     } catch (err) {
       console.error("Failed to delete product:", err.message);
-      alert("Failed to delete product");
+      toast.error("Failed to delete product");
     }
   };
 
@@ -515,7 +516,7 @@ export default function Profile() {
       setCvs(res.data.cvs || []);
     } catch (err) {
       console.error("Failed to fetch user CVs:", err.response?.data || err.message);
-      alert(err.response?.data?.message || "Failed to fetch user CVs.");
+      toast.error(err.response?.data?.message || "Failed to fetch user CVs.");
     }
   };
 

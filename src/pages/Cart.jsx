@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../axios.js";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Cart() {
   const [cartItems, setCartItems] = useState([]);
@@ -57,7 +58,7 @@ export default function Cart() {
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      alert("Your cart is empty. Add items before proceeding to checkout.");
+      toast.error("Your cart is empty. Add items before proceeding to checkout.");
       return;
     }
     navigate("/checkout");

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "../axios.js"; // your axios instance
+import { toast } from "react-toastify";
 
 const CheckoutButton = ({ items }) => {
   const handleCheckout = async () => {
@@ -23,7 +24,7 @@ const CheckoutButton = ({ items }) => {
       window.location.href = res.data.url;
     } catch (err) {
       console.error("Payment failed:", err);
-      alert(err.response?.data?.message || "Payment failed");
+      toast.error(err.response?.data?.message || "Payment failed");
     }
   };
 

@@ -4,6 +4,7 @@ import Filters from "../components/Filters";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
+import { toast } from "react-toastify";
 
 export default function Explore({ products, favorites, toggleFav, cart, addToCart, removeFromCart }) {
     const { user } = useContext(AuthContext);
@@ -23,10 +24,10 @@ export default function Explore({ products, favorites, toggleFav, cart, addToCar
             const url = user?.role === "admin" ? `${import.meta.env.VITE_API_BASE_PROD}/api/products/admin/${productId}` : `${import.meta.env.VITE_API_BASE_PROD}/api/products/${productId}`;
             await axios.delete(url);
             setProducts(products.filter((product) => product._id !== productId));
-            alert("Product deleted successfully");
+            toast.success("Product deleted successfully");
         } catch (err) {
             console.error("Failed to delete product:", err.message);
-            alert("Failed to delete product");
+            toast.error("Failed to delete product");
         }
     };
 

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../axiosInstance";
+import { toast } from "react-toastify";
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
@@ -35,10 +36,10 @@ export default function ProductsPage() {
       const url = isAdmin ? `/api/products/admin/${productId}` : `/api/products/${productId}`;
       await axios.delete(url);
       setProducts(products.filter((product) => product._id !== productId));
-      alert("Product deleted successfully");
+      toast.success("Product deleted successfully");
     } catch (err) {
       console.error("Failed to delete product:", err.message);
-      alert("Failed to delete product");
+      toast.error("Failed to delete product");
     }
   };
 

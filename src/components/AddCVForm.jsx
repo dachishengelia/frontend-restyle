@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../axios';
 import { ThemeContext } from '../context/ThemeContext.jsx';
+import { toast } from 'react-toastify';
 
 const AddCVForm = () => {
   const { theme } = useContext(ThemeContext);
@@ -61,7 +62,7 @@ const AddCVForm = () => {
   const handleSubmitCV = async () => {
     // Validate form
     if (!formData.height || !formData.weight || !formData.nationality || !formData.languages.length || !formData.email) {
-      alert('Please fill all required fields');
+      toast.error('Please fill all required fields');
       return;
     }
     setLoading(true);
@@ -71,10 +72,10 @@ const AddCVForm = () => {
         formData,
         { withCredentials: true }
       );
-      alert(response.data.message);
+      toast.success(response.data.message);
       navigate('/cv-marketplace');
     } catch (error) {
-      alert('CV submission failed: ' + (error.response?.data?.message || error.message));
+      toast.error('CV submission failed: ' + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }

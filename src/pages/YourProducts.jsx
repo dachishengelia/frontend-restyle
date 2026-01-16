@@ -29,10 +29,9 @@ export default function YourProducts({ toggleFav, cart, addToCart, removeFromCar
     try {
       await axios.delete(`/api/products/${productId}`);
       setProducts(products.filter((product) => product._id !== productId));
-      toast.success("Product deleted successfully");
     } catch (err) {
       console.error("Failed to delete product:", err.message);
-      toast.error("Failed to delete product");
+      throw err; // Re-throw so ProductCard can handle the error
     }
   };
 

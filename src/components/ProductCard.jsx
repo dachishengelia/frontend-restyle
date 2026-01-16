@@ -35,6 +35,9 @@ export default function ProductCard({
   // Check if user is the seller of this product
   const isOwnProduct = user?.role === "seller" && (p.sellerId === user._id || p.sellerId?._id === user._id);
 
+  // For debugging - check if delete button should show
+  const shouldShowDelete = user?.role === "admin" || isOwnProduct;
+
   // Add or remove product from cart
   const handleCartAction = (e) => {
     e.preventDefault();
@@ -85,8 +88,12 @@ export default function ProductCard({
     e.preventDefault();
     e.stopPropagation();
     if (!p?._id || !onDelete) return;
+
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+
     try {
       await onDelete(p._id);
+      toast.success("Product deleted successfully");
     } catch (err) {
       console.error("Failed to delete product:", err);
       toast.error("Failed to delete product");
@@ -335,7 +342,7 @@ export default function ProductCard({
         )}
 
         {/* Admin/Seller Delete */}
-        {(user?.role === "admin" || (user?.role === "seller" && (p.sellerId === user._id || p.sellerId?._id === user._id))) && (
+        {(user?.role === "admin" || (user?.role === "seller" && (p.sellerId === user._id || p.sellerId?._id === user._id)) || (user?.role === "seller" && onDelete)) && (
           <button
             type="button"
             onClick={handleDelete}

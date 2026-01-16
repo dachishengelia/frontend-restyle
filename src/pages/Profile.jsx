@@ -502,10 +502,9 @@ export default function Profile() {
     try {
       await axios.delete(`/api/products/${productId}`);
       setProducts(products.filter((p) => p._id !== productId));
-      toast.success("Product deleted successfully");
     } catch (err) {
       console.error("Failed to delete product:", err.message);
-      toast.error("Failed to delete product");
+      throw err; // Re-throw so ProductCard can handle the error
     }
   };
 

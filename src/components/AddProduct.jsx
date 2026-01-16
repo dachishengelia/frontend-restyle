@@ -290,7 +290,7 @@ export default function AddProduct() {
                 name="category"
                 value={form.category}
                 onChange={handleChange}
-                placeholder="e.g., Clothing, Electronics"
+                placeholder="e.g., shirt,pants..."
                 className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   theme === "dark"
                     ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
@@ -366,32 +366,115 @@ export default function AddProduct() {
                 <Ruler className="inline h-4 w-4 mr-2" />
                 Available Sizes
               </label>
-              <select
-                name="sizes"
-                multiple
-                value={form.sizes}
-                onChange={handleMultiChange}
-                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent h-32 ${
-                  theme === "dark"
-                    ? "bg-gray-700 border-gray-600 text-white"
-                    : "bg-white border-gray-300 text-gray-900"
-                }`}
-              >
-                <option value="S">S</option>
-                <option value="M">M</option>
-                <option value="L">L</option>
-                <option value="XL">XL</option>
-                <option value="XXL">XXL</option>
-                <option value="40">40</option>
-                <option value="41">41</option>
-                <option value="42">42</option>
-                <option value="43">43</option>
-                <option value="44">44</option>
-                <option value="45">45</option>
-              </select>
-              <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
-                Hold Ctrl/Cmd to select multiple
-              </p>
+
+              {/* Selected Sizes Display */}
+              {form.sizes.length > 0 && (
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {form.sizes.map((size) => (
+                    <span
+                      key={size}
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        theme === "dark"
+                          ? "bg-blue-600 text-white"
+                          : "bg-blue-100 text-blue-800"
+                      }`}
+                    >
+                      {size}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setForm({
+                            ...form,
+                            sizes: form.sizes.filter(s => s !== size)
+                          });
+                        }}
+                        className={`ml-2 hover:bg-opacity-80 rounded-full p-0.5 ${
+                          theme === "dark" ? "hover:bg-blue-700" : "hover:bg-blue-200"
+                        }`}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Size Checkboxes */}
+              <div className={`p-4 rounded-lg border transition-all duration-200 ${
+                theme === "dark"
+                  ? "bg-gray-700 border-gray-600"
+                  : "bg-gray-50 border-gray-200"
+              }`}>
+                <div className="grid grid-cols-3 gap-3">
+                  {["S", "M", "L", "XL", "XXL"].map((size) => (
+                    <label key={size} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={form.sizes.includes(size)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setForm({
+                              ...form,
+                              sizes: [...form.sizes, size]
+                            });
+                          } else {
+                            setForm({
+                              ...form,
+                              sizes: form.sizes.filter(s => s !== size)
+                            });
+                          }
+                        }}
+                        className={`w-4 h-4 rounded border-2 transition-colors ${
+                          theme === "dark"
+                            ? "bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500"
+                            : "bg-white border-gray-300 text-blue-600 focus:ring-blue-500"
+                        }`}
+                      />
+                      <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                        {size}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+
+                {/* Shoe Sizes */}
+                <div className="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600">
+                  <p className={`text-xs font-medium mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    Shoe Sizes:
+                  </p>
+                  <div className="grid grid-cols-4 gap-2">
+                    {["40", "41", "42", "43", "44", "45"].map((size) => (
+                      <label key={size} className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={form.sizes.includes(size)}
+                          onChange={(e) => {
+                            if (e.target.checked) {
+                              setForm({
+                                ...form,
+                                sizes: [...form.sizes, size]
+                              });
+                            } else {
+                              setForm({
+                                ...form,
+                                sizes: form.sizes.filter(s => s !== size)
+                              });
+                            }
+                          }}
+                          className={`w-4 h-4 rounded border-2 transition-colors ${
+                            theme === "dark"
+                              ? "bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500"
+                              : "bg-white border-gray-300 text-blue-600 focus:ring-blue-500"
+                          }`}
+                        />
+                        <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                          {size}
+                        </span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Colors */}
@@ -400,35 +483,81 @@ export default function AddProduct() {
                 <Palette className="inline h-4 w-4 mr-2" />
                 Available Colors
               </label>
-              <select
-                name="colors"
-                multiple
-                value={form.colors}
-                onChange={handleMultiChange}
-                className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent h-32 ${
-                  theme === "dark"
-                    ? "bg-gray-700 border-gray-600 text-white"
-                    : "bg-white border-gray-300 text-gray-900"
-                }`}
-              >
-                <option value="Black">Black</option>
-                <option value="White">White</option>
-                <option value="Red">Red</option>
-                <option value="Blue">Blue</option>
-                <option value="Green">Green</option>
-                <option value="Yellow">Yellow</option>
-                <option value="Pink">Pink</option>
-                <option value="Purple">Purple</option>
-                <option value="Orange">Orange</option>
-                <option value="Gray">Gray</option>
-                <option value="Brown">Brown</option>
-                <option value="Beige">Beige</option>
-                <option value="Navy">Navy</option>
-                <option value="Burgundy">Burgundy</option>
-              </select>
-              <p className={`text-xs mt-1 ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
-                Hold Ctrl/Cmd to select multiple
-              </p>
+
+              {/* Selected Colors Display */}
+              {form.colors.length > 0 && (
+                <div className="mb-3 flex flex-wrap gap-2">
+                  {form.colors.map((color) => (
+                    <span
+                      key={color}
+                      className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                        theme === "dark"
+                          ? "bg-purple-600 text-white"
+                          : "bg-purple-100 text-purple-800"
+                      }`}
+                    >
+                      {color}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setForm({
+                            ...form,
+                            colors: form.colors.filter(c => c !== color)
+                          });
+                        }}
+                        className={`ml-2 hover:bg-opacity-80 rounded-full p-0.5 ${
+                          theme === "dark" ? "hover:bg-purple-700" : "hover:bg-purple-200"
+                        }`}
+                      >
+                        ×
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              {/* Color Checkboxes */}
+              <div className={`p-4 rounded-lg border transition-all duration-200 ${
+                theme === "dark"
+                  ? "bg-gray-700 border-gray-600"
+                  : "bg-gray-50 border-gray-200"
+              }`}>
+                <div className="grid grid-cols-2 gap-3">
+                  {[
+                    "Black", "White", "Red", "Blue", "Green", "Yellow",
+                    "Pink", "Purple", "Orange", "Gray", "Brown", "Beige",
+                    "Navy", "Burgundy"
+                  ].map((color) => (
+                    <label key={color} className="flex items-center space-x-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={form.colors.includes(color)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setForm({
+                              ...form,
+                              colors: [...form.colors, color]
+                            });
+                          } else {
+                            setForm({
+                              ...form,
+                              colors: form.colors.filter(c => c !== color)
+                            });
+                          }
+                        }}
+                        className={`w-4 h-4 rounded border-2 transition-colors ${
+                          theme === "dark"
+                            ? "bg-gray-600 border-gray-500 text-purple-500 focus:ring-purple-500"
+                            : "bg-white border-gray-300 text-purple-600 focus:ring-purple-500"
+                        }`}
+                      />
+                      <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                        {color}
+                      </span>
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
 

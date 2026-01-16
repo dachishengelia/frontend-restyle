@@ -44,11 +44,19 @@ export default function Navbar({ favoritesCount }) {
         {location.pathname !== "/" && <BackButton className="absolute left-0 top-1/2 -translate-y-1/2" />}
         {/* Logo */}
         <div className="flex items-center gap-4">
-          <img src={logo} alt="logo" className="w-14 h-14 object-contain transition-transform hover:scale-105" />
-          <Link to="/" className="font-bold text-2xl tracking-wide bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 transition-all duration-300">
-            ReStyle
-          </Link>
-        </div>
+  <img 
+    src={logo} 
+    alt="logo" 
+    className="w-14 h-14 object-contain transition-transform hover:scale-105" 
+  />
+  <Link 
+    to="/" 
+    className="font-bold text-2xl tracking-wide bg-gradient-to-r from-purple-500 to-blue-500 bg-clip-text text-transparent inline-block hover:from-purple-600 hover:to-blue-600 transition-all duration-300"
+  >
+    ReStyle
+  </Link>
+</div>
+
 
         {/* Right side */}
         <div className="flex items-center gap-4">

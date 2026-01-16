@@ -241,7 +241,7 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
   useEffect(() => {
     const fetchLikesData = async () => {
       try {
-        const res = await axios.get(`/api/product-actions/${productId}`, {
+        const res = await axios.get(`/api/products/${productId}/likes`, {
           withCredentials: true
         });
         setLikesCount(res.data.likesCount || 0);

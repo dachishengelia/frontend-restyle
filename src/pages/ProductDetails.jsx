@@ -219,7 +219,7 @@ import { toast } from "react-toastify";
 import axios from "../axios.js";
 import { AuthContext } from "../context/AuthContext.jsx";
 import { ThemeContext } from "../context/ThemeContext.jsx";
-import { Heart, MessageCircle, ShoppingCart, CreditCard, ThumbsUp, ThumbsDown, User } from 'lucide-react';
+import { Heart, MessageCircle, ShoppingCart, CreditCard, ThumbsUp, ThumbsDown, User, Trash2 } from 'lucide-react';
 
 export default function ProductDetails({ cart, addToCart, removeFromCart }) {
   const { productId } = useParams();
@@ -234,6 +234,8 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
   const [dislikesCount, setDislikesCount] = useState(0);
   const [userLiked, setUserLiked] = useState(false);
   const [userDisliked, setUserDisliked] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [commentToDelete, setCommentToDelete] = useState(null);
 
   // Fetch initial likes/dislikes data
   useEffect(() => {
@@ -363,16 +365,26 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
     }
   };
 
-  const handleDeleteComment = async (commentId) => {
-    if (!user) return;
+  const handleDeleteComment = (commentId) => {
+    setCommentToDelete(commentId);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDeleteComment = async () => {
+    if (!user || !commentToDelete) return;
     try {
       const res = await axios.delete(
-        `/api/product-actions/${productId}/comment/${commentId}`,
+        `/api/product-actions/${productId}/comment/${commentToDelete}`,
         { withCredentials: true }
       );
       setComments(res.data.comments);
+      toast.success("Comment deleted successfully");
     } catch (err) {
       console.error("Delete comment error:", err);
+      toast.error("Failed to delete comment");
+    } finally {
+      setShowDeleteModal(false);
+      setCommentToDelete(null);
     }
   };
 
@@ -647,13 +659,21 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
                   theme === "dark" ? "border-gray-600 text-gray-200" : "border-gray-200 text-gray-800"
                 }`}
               >
-                <span className="font-semibold">{c.username}:</span> <span>{c.text}</span>
-                <div className="text-xs text-gray-400">{new Date(c.createdAt).toLocaleString()}</div>
-                {user && (user._id == c.userId || user.role === "admin") && (
-                  <button onClick={() => handleDeleteComment(c._id)} className="text-red-500 text-xs ml-2">
-                    Delete
-                  </button>
-                )}
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <span className="font-semibold">{c.username}:</span> <span>{c.text}</span>
+                    <div className="text-xs text-gray-400 mt-1">{new Date(c.createdAt).toLocaleString()}</div>
+                  </div>
+                  {user && (user._id == c.userId || user.role === "admin") && (
+                    <button
+                      onClick={() => handleDeleteComment(c._id)}
+                      className="ml-4 p-2 rounded-lg text-red-500 hover:bg-red-500/10 transition-colors duration-200 hover:scale-110"
+                      title="Delete comment"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
               </div>
             ))
           )}
@@ -687,6 +707,64 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
           </div>
         )}
         </div>
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div
+              className="absolute inset-0 backdrop-blur-sm"
+              style={{
+                background: 'rgba(0, 0, 0, 0.5)',
+                backdropFilter: 'blur(8px)',
+                WebkitBackdropFilter: 'blur(8px)'
+              }}
+              onClick={() => setShowDeleteModal(false)}
+            ></div>
+            <div
+              className="relative rounded-3xl shadow-2xl p-8 max-w-md w-full transform transition-all duration-300 scale-100"
+              style={{
+                background: theme === "dark"
+                  ? 'rgba(31, 41, 55, 0.95)'
+                  : 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(20px)',
+                WebkitBackdropFilter: 'blur(20px)',
+                border: theme === "dark"
+                  ? '1px solid rgba(75, 85, 99, 0.3)'
+                  : '1px solid rgba(209, 213, 219, 0.3)'
+              }}
+            >
+              <div className="text-center">
+                <div className="mb-6">
+                  <Trash2 className="w-16 h-16 mx-auto text-red-500 mb-4" />
+                  <h3 className={`text-2xl font-bold mb-2 ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
+                    Delete Comment
+                  </h3>
+                  <p className={`text-lg ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    Are you sure you want to delete this comment? This action cannot be undone.
+                  </p>
+                </div>
+                <div className="flex gap-4">
+                  <button
+                    onClick={() => setShowDeleteModal(false)}
+                    className={`flex-1 px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                      theme === "dark"
+                        ? "bg-gray-700 text-gray-200 hover:bg-gray-600"
+                        : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                    }`}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={confirmDeleteComment}
+                    className="flex-1 px-6 py-3 rounded-xl font-semibold text-white transition-all duration-300 transform hover:scale-105 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

@@ -119,33 +119,35 @@ export default function Navbar({ favoritesCount }) {
             </Link>
           )}
 
-          {/* Favorites & Cart */}
-          <div className="flex flex-col gap-2 w-full">
-            <Link
-              to="/favorites"
-              className="flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-            >
-              <span className="text-base group-hover:scale-125 transition-transform duration-300">❤️</span>
-              <span>Favorites</span>
-              {favoritesCount > 0 && (
-                <span className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full">
-                  {favoritesCount}
-                </span>
-              )}
-            </Link>
-            <Link
-              to="/cart"
-              className="flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-            >
-              <span className="text-base group-hover:scale-125 transition-transform duration-300">🛒</span>
-              <span>Cart</span>
-              {cart.length > 0 && (
-                <span className="bg-gradient-to-r from-green-500 to-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                  {cart.length}
-                </span>
-              )}
-            </Link>
-          </div>
+          {/* Favorites & Cart - Only show for logged in users */}
+          {user && (
+            <div className="flex flex-col gap-2 w-full">
+              <Link
+                to="/favorites"
+                className="flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+              >
+                <span className="text-base group-hover:scale-125 transition-transform duration-300">❤️</span>
+                <span>Favorites</span>
+                {favoritesCount > 0 && (
+                  <span className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full">
+                    {favoritesCount}
+                  </span>
+                )}
+              </Link>
+              <Link
+                to="/cart"
+                className="flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+              >
+                <span className="text-base group-hover:scale-125 transition-transform duration-300">🛒</span>
+                <span>Cart</span>
+                {cart.length > 0 && (
+                  <span className="bg-gradient-to-r from-green-500 to-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                    {cart.length}
+                  </span>
+                )}
+              </Link>
+            </div>
+          )}
 
           {/* User buttons */}
           {user ? (

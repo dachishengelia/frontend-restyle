@@ -174,8 +174,8 @@ export default function LogIn() {
                 }}
             >
                 <div className="text-center mb-8">
-                    <h1 className="text-4xl font-bold text-white mb-2">Welcome Back</h1>
-                    <p className="text-indigo-100">Sign in to your account</p>
+                    <h1 className={`text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Welcome Back</h1>
+                    <p className={`${theme === 'dark' ? 'text-indigo-100' : 'text-gray-600'}`}>Sign in to your account</p>
                 </div>
                 <form onSubmit={handleSubmit} className="flex flex-col gap-6">
                     <div className="relative group">
@@ -233,8 +233,8 @@ export default function LogIn() {
                     <Chrome className="w-5 h-5" />
                     Continue with Google
                 </a>
-                <p className="text-center mt-8 text-indigo-100">
-                    Don't have an account? <Link className="text-white font-semibold hover:underline hover:text-indigo-200 transition-colors duration-300" to="/sign-up">Sign up</Link>
+                <p className={`text-center mt-8 ${theme === 'dark' ? 'text-indigo-100' : 'text-gray-600'}`}>
+                    Don't have an account? <Link className={`font-semibold hover:underline transition-colors duration-300 ${theme === 'dark' ? 'text-white hover:text-indigo-200' : 'text-indigo-600 hover:text-indigo-800'}`} to="/sign-up">Sign up</Link>
                 </p>
             </div>
         </div>

@@ -56,55 +56,65 @@ export default function App() {
       .catch((err) => console.error("Failed to load products:", err));
   }, []);
 
-  const [favorites, setFavorites] = useState(() => getCookie("ecom_favs"));
-  React.useEffect(() => {
-    setCookie("ecom_favs", favorites, 7);
-  }, [favorites]);
-
-  const toggleFav = (id) => {
-    setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]));
-  };
-
-  const [cart, setCart] = useState(() => getCookie("ecom_cart") || []);
-  React.useEffect(() => {
-    setCookie("ecom_cart", cart, 7);
-  }, [cart]);
-
-  const addToCart = (id) => {
-    setCart((prev) => {
-      const existing = prev.find(item => item.id === id);
-      if (existing) {
-        return prev.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item);
-      } else {
-        return [...prev, { id, quantity: 1 }];
-      }
-    });
-  };
-
-  const removeFromCart = (id) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
-  };
-
-  const updateCart = (id, quantity) => {
-    if (quantity <= 0) {
-      removeFromCart(id);
-    } else {
-      setCart((prev) => prev.map(item => item.id === id ? { ...item, quantity } : item));
-    }
-  };
-
-  const clearCart = () => {
-    setCart([]);
-  };
 
   const AppContent = () => {
     const { theme } = useContext(ThemeContext);
+    const { user } = useContext(AuthContext);
+
+    const userSuffix = user ? `_${user._id}` : '';
+
+    const [favorites, setFavorites] = useState(() => getCookie("ecom_favs", userSuffix));
+    React.useEffect(() => {
+      setCookie("ecom_favs", favorites, 7, userSuffix);
+    }, [favorites, userSuffix]);
+
+    const [cart, setCart] = useState(() => getCookie("ecom_cart", userSuffix) || []);
+    React.useEffect(() => {
+      setCookie("ecom_cart", cart, 7, userSuffix);
+    }, [cart, userSuffix]);
+
+    // Load data when user changes
+    React.useEffect(() => {
+      setFavorites(getCookie("ecom_favs", userSuffix));
+      setCart(getCookie("ecom_cart", userSuffix) || []);
+    }, [user]);
+
+    const toggleFav = (id) => {
+      setFavorites((prev) => (prev.includes(id) ? prev.filter((f) => f !== id) : [...prev, id]));
+    };
+
+    const addToCart = (id) => {
+      setCart((prev) => {
+        const existing = prev.find(item => item.id === id);
+        if (existing) {
+          return prev.map(item => item.id === id ? { ...item, quantity: item.quantity + 1 } : item);
+        } else {
+          return [...prev, { id, quantity: 1 }];
+        }
+      });
+    };
+
+    const removeFromCart = (id) => {
+      setCart((prev) => prev.filter((item) => item.id !== id));
+    };
+
+    const updateCart = (id, quantity) => {
+      if (quantity <= 0) {
+        removeFromCart(id);
+      } else {
+        setCart((prev) => prev.map(item => item.id === id ? { ...item, quantity } : item));
+      }
+    };
+
+    const clearCart = () => {
+      setCart([]);
+    };
+
     return (
-      <AuthProvider>
-        <CartProvider>
-          <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
-          <Navbar favoritesCount={favorites.length} />
-          <main className="flex-1 w-full">
+      <CartProvider>
+        <div className={`flex flex-col min-h-screen ${theme === 'dark' ? 'bg-gray-900' : 'bg-white'}`}>
+        <Navbar favoritesCount={favorites.length} />
+        <main className="flex-1 w-full">
             <Routes>
               <Route
                 path="/"
@@ -220,13 +230,14 @@ export default function App() {
           <Footer />
         </div>
         </CartProvider>
-      </AuthProvider>
     );
   };
 
   return (
     <ThemeProvider>
-      <AppContent />
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

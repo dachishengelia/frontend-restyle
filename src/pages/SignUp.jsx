@@ -76,8 +76,8 @@ export default function SignUp() {
         }}
       >
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-white mb-2">Create Account</h1>
-          <p className="text-indigo-100">Join our community today</p>
+          <h1 className={`text-4xl font-bold mb-2 ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Create Account</h1>
+          <p className={`${theme === 'dark' ? 'text-indigo-100' : 'text-gray-600'}`}>Join our community today</p>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6">
           <div className="relative group">
@@ -126,9 +126,9 @@ export default function SignUp() {
             />
           </div>
           <div className="flex flex-col gap-4">
-            <label className="text-sm font-semibold text-white">Select Role:</label>
+            <label className={`text-sm font-semibold ${theme === 'dark' ? 'text-white' : 'text-gray-700'}`}>Select Role:</label>
             <div className="flex gap-6 justify-center">
-              <label className="flex items-center gap-3 cursor-pointer bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/20 transition-all duration-300">
+              <label className={`flex items-center gap-3 cursor-pointer px-4 py-2 rounded-lg transition-all duration-300 ${theme === 'dark' ? 'bg-white/10 backdrop-blur-sm hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200'}`}>
                 <input
                   type="radio"
                   name="role"
@@ -137,9 +137,9 @@ export default function SignUp() {
                   onChange={e => setRole(e.target.value)}
                   className="accent-indigo-500"
                 />
-                <span className="text-white font-medium">Buyer</span>
+                <span className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Buyer</span>
               </label>
-              <label className="flex items-center gap-3 cursor-pointer bg-white/10 backdrop-blur-sm px-4 py-2 rounded-lg hover:bg-white/20 transition-all duration-300">
+              <label className={`flex items-center gap-3 cursor-pointer px-4 py-2 rounded-lg transition-all duration-300 ${theme === 'dark' ? 'bg-white/10 backdrop-blur-sm hover:bg-white/20' : 'bg-gray-100 hover:bg-gray-200'}`}>
                 <input
                   type="radio"
                   name="role"
@@ -148,7 +148,7 @@ export default function SignUp() {
                   onChange={e => setRole(e.target.value)}
                   className="accent-indigo-500"
                 />
-                <span className="text-white font-medium">Seller</span>
+                <span className={`font-medium ${theme === 'dark' ? 'text-white' : 'text-gray-900'}`}>Seller</span>
               </label>
             </div>
           </div>
@@ -165,8 +165,8 @@ export default function SignUp() {
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
           </button>
         </form>
-        <p className="text-center mt-8 text-indigo-100">
-          Already have an account? <Link className="text-white font-semibold hover:underline hover:text-indigo-200 transition-colors duration-300" to="/log-in">Log In</Link>
+        <p className={`text-center mt-8 ${theme === 'dark' ? 'text-indigo-100' : 'text-gray-600'}`}>
+          Already have an account? <Link className={`font-semibold hover:underline transition-colors duration-300 ${theme === 'dark' ? 'text-white hover:text-indigo-200' : 'text-indigo-600 hover:text-indigo-800'}`} to="/log-in">Log In</Link>
         </p>
       </div>
     </div>

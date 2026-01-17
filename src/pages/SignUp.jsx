@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../context/AuthContext.jsx';
 import { ThemeContext } from '../context/ThemeContext.jsx';
-import { User, Mail, Lock, UserPlus } from 'lucide-react';
+import { User, Mail, Lock, UserPlus, Chrome } from 'lucide-react';
 import axios from "../axios.js";
 
 export default function SignUp() {
@@ -165,6 +165,18 @@ export default function SignUp() {
             <div className="absolute inset-0 bg-gradient-to-r from-indigo-600 to-purple-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
           </button>
         </form>
+        <div className="my-8 flex items-center">
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"></div>
+          <span className="px-4 text-gray-300 font-medium">or</span>
+          <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"></div>
+        </div>
+        <a
+          href={`${import.meta.env.VITE_API_BASE_PROD}/api/auth/google`}
+          className="w-full flex items-center justify-center gap-3 bg-white/10 backdrop-blur-sm text-white py-4 rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/20"
+        >
+          <Chrome className="w-5 h-5" />
+          Sign up with Google
+        </a>
         <p className={`text-center mt-8 ${theme === 'dark' ? 'text-indigo-100' : 'text-gray-600'}`}>
           Already have an account? <Link className={`font-semibold hover:underline transition-colors duration-300 ${theme === 'dark' ? 'text-white hover:text-indigo-200' : 'text-indigo-600 hover:text-indigo-800'}`} to="/log-in">Log In</Link>
         </p>

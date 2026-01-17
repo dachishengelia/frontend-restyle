@@ -138,14 +138,26 @@ export default function LogIn() {
     // handle token from OAuth / redirect
     useEffect(() => {
         const token = searchParams.get('token');
+        
         if (token) {
             document.cookie = `token=${token}; path=/; max-age=${60 * 60 * 24}`;
+            
+            // Fetch user info to check if they need to select a role
             (async () => {
                 try {
                     const me = await axios.get("/api/auth/me", { withCredentials: true });
-                    logIn(me.data.user);
+                    const userData = me.data.user;
+                    
+                    // If user doesn't have a role, redirect to role selection
+                    if (!userData?.role) {
+                        navigate(`/complete-profile?token=${token}`);
+                        return;
+                    }
+                    
+                    // User has role, proceed normally
+                    logIn(userData);
                     toast.success('Logged in successfully');
-                    redirectByRole(me.data.user);
+                    redirectByRole(userData);
                 } catch (err) {
                     console.error(err);
                     toast.error("Failed to fetch user info after login.");
@@ -153,7 +165,7 @@ export default function LogIn() {
                 }
             })();
         }
-    }, [searchParams]);
+    }, [searchParams, navigate, logIn]);
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 flex items-center justify-center p-4 relative overflow-hidden">

@@ -9,6 +9,7 @@ import Explore from "./pages/Explore.jsx";
 import Favorites from "./pages/Favorites.jsx";
 import LogIn from "./pages/LogIn.jsx";
 import SignUp from "./pages/SignUp.jsx";
+import CompleteGoogleProfile from "./pages/CompleteGoogleProfile.jsx";
 import AdminPanel from "./admin/AdminPanel.jsx";
 import AddProduct from "./components/AddProduct.jsx";
 import AddCVForm from "./components/AddCVForm.jsx";
@@ -158,6 +159,7 @@ export default function App() {
               <Route path="/auth" element={<LogIn />} />
               <Route path="/log-in" element={<LogIn />} />
               <Route path="/sign-up" element={<SignUp />} />
+              <Route path="/complete-profile" element={<CompleteGoogleProfile />} />
 
               {/* <Route
                 path="/discounts"

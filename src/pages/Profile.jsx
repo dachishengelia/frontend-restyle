@@ -636,7 +636,7 @@ export default function Profile() {
           </div>
 
           {/* Role Management Card */}
-          <div className={`p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800/70 to-gray-700/70 backdrop-blur-md border border-gray-600/50' : 'bg-white/90 backdrop-blur-md border border-gray-200/50'}`}>
+          <div className={`col-span-1 md:col-span-2 p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800/70 to-gray-700/70 backdrop-blur-md border border-gray-600/50' : 'bg-white/90 backdrop-blur-md border border-gray-200/50'}`}>
             <div className="flex items-center mb-4">
               <span className="text-2xl mr-3">🔄</span>
               <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-900'}`}>Role Management</h3>

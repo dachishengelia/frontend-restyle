@@ -392,6 +392,8 @@ export default function Profile() {
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterStatus, setNewsletterStatus] = useState(null);
   const [newsletterLoading, setNewsletterLoading] = useState(false);
+  const [selectedRole, setSelectedRole] = useState(user?.role || "buyer");
+  const [rolePassword, setRolePassword] = useState("");
 
   const getTitle = () => {
     switch (user?.role) {
@@ -479,6 +481,27 @@ export default function Profile() {
     setNewsletterStatus(result);
     setNewsletterLoading(false);
     if (result.success) setNewsletterEmail("");
+  };
+
+  // ---------------- ROLE CHANGE ------------------
+  const handleRoleChangeSubmit = async (e) => {
+    e.preventDefault();
+    if (!rolePassword) {
+      setMessage("Password is required to change role.");
+      return;
+    }
+    try {
+      const res = await axios.patch("/api/profile/me/role", {
+        newRole: selectedRole,
+        email: user.email,
+        password: rolePassword
+      });
+      logIn(res.data.user);
+      setMessage("Role updated successfully.");
+      setRolePassword("");
+    } catch (err) {
+      setMessage(err.response?.data?.message || "Failed to update role.");
+    }
   };
 
   const handleSignOut = () => {
@@ -610,6 +633,41 @@ export default function Profile() {
               </button>
               {user?.role === "admin" && <Link to="/admin" className="w-full py-3 rounded-lg text-white bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg block text-center">Admin Panel</Link>}
             </div>
+          </div>
+
+          {/* Role Management Card */}
+          <div className={`p-8 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-105 ${theme === 'dark' ? 'bg-gradient-to-br from-gray-800/70 to-gray-700/70 backdrop-blur-md border border-gray-600/50' : 'bg-white/90 backdrop-blur-md border border-gray-200/50'}`}>
+            <div className="flex items-center mb-4">
+              <span className="text-2xl mr-3">🔄</span>
+              <h3 className={`text-xl font-semibold ${theme === 'dark' ? 'text-gray-200' : 'text-gray-900'}`}>Role Management</h3>
+            </div>
+            <p className={`mb-4 ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>Current Role: <span className="font-semibold">{user?.role}</span></p>
+            <form onSubmit={handleRoleChangeSubmit} className="space-y-4">
+              <select
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
+                disabled={user?.role === "admin"}
+                className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 transition ${theme === 'dark' ? 'bg-gray-700 text-gray-200 border-gray-600' : 'bg-gray-50 text-gray-900 border-gray-300'} ${user?.role === "admin" ? 'opacity-50 cursor-not-allowed' : ''}`}
+              >
+                <option value="buyer">Buyer</option>
+                <option value="seller">Seller</option>
+              </select>
+              <input
+                type="password"
+                value={rolePassword}
+                onChange={(e) => setRolePassword(e.target.value)}
+                placeholder="Enter your password"
+                disabled={user?.role === "admin"}
+                className={`w-full border rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 transition ${theme === 'dark' ? 'bg-gray-700 text-gray-200 border-gray-600' : 'bg-gray-50 text-gray-900 border-gray-300'} ${user?.role === "admin" ? 'opacity-50 cursor-not-allowed' : ''}`}
+              />
+              <button
+                type="submit"
+                disabled={user?.role === "admin"}
+                className="w-full py-3 rounded-lg text-white bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Change Role
+              </button>
+            </form>
           </div>
 
           {/* Message Display */}

@@ -227,7 +227,7 @@ export default function LogIn() {
                     <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gray-400 to-transparent"></div>
                 </div>
                 <a
-                    href={`${import.meta.env.VITE_API_BASE_PROD}/auth/google`}
+                    href={`${import.meta.env.VITE_API_BASE_PROD}/api/auth/google`}
                     className="w-full flex items-center justify-center gap-3 bg-white/10 backdrop-blur-sm text-white py-4 rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/20"
                 >
                     <Chrome className="w-5 h-5" />

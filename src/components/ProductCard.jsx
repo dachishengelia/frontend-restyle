@@ -168,7 +168,7 @@ export default function ProductCard({
 
   return (
     <div
-      className={`rounded-2xl overflow-hidden shadow-2xl hover:shadow-3xl transition-all duration-500 transform hover:-translate-y-2 hover:rotate-1 cursor-pointer backdrop-blur-sm ${
+      className={`rounded-xl sm:rounded-2xl overflow-hidden shadow-lg sm:shadow-2xl hover:shadow-xl sm:hover:shadow-3xl transition-all duration-500 transform md:hover:-translate-y-2 md:hover:rotate-1 cursor-pointer backdrop-blur-sm ${
         theme === "dark"
           ? "bg-gray-800/80 border border-gray-600/50"
           : "bg-white/90 border border-gray-200/50"
@@ -214,14 +214,14 @@ export default function ProductCard({
             WebkitBackdropFilter: 'blur(8px)',
           }}
         >
-        <div className="flex justify-between items-start">
-          <h3 className={`${theme === "dark" ? "text-gray-200" : "text-gray-900"} font-semibold`}>
+        <div className="flex justify-between items-start gap-2">
+          <h3 className={`${theme === "dark" ? "text-gray-200" : "text-gray-900"} font-semibold text-sm sm:text-base line-clamp-2`}>
             {p.name}
           </h3>
           <button
             type="button"
             onClick={handleToggleFav}
-            className={`p-2 rounded-full transition-all duration-300 hover:scale-110 ${
+            className={`p-2 rounded-full transition-all duration-300 active:scale-95 md:hover:scale-110 touch-manipulation flex-shrink-0 ${
               isFav
                 ? "bg-red-500/20 text-red-500"
                 : theme === "dark"
@@ -260,7 +260,7 @@ export default function ProductCard({
             <button
               type="button"
               onClick={handleLike}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all duration-300 hover:scale-105 ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-2 rounded-lg text-xs sm:text-sm transition-all duration-300 active:scale-95 md:hover:scale-105 touch-manipulation ${
                 userLiked
                   ? "bg-gradient-to-r from-blue-500 to-blue-600 text-white shadow-lg"
                   : theme === "dark"
@@ -268,13 +268,13 @@ export default function ProductCard({
                   : "bg-gray-200/50 text-gray-700 hover:bg-blue-500/20 hover:text-blue-400 border border-gray-300/50"
               }`}
             >
-              <ThumbsUp className="w-4 h-4" />
+              <ThumbsUp className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               {userLiked && <span>{likesCount}</span>}
             </button>
             <button
               type="button"
               onClick={handleDislike}
-              className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-all duration-300 hover:scale-105 ${
+              className={`flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-2 rounded-lg text-xs sm:text-sm transition-all duration-300 active:scale-95 md:hover:scale-105 touch-manipulation ${
                 userDisliked
                   ? "bg-gradient-to-r from-red-500 to-red-600 text-white shadow-lg"
                   : theme === "dark"
@@ -282,7 +282,7 @@ export default function ProductCard({
                   : "bg-gray-200/50 text-gray-700 hover:bg-red-500/20 hover:text-red-400 border border-gray-300/50"
               }`}
             >
-              <ThumbsDown className="w-4 h-4" />
+              <ThumbsDown className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
               {userDisliked && <span>{dislikesCount}</span>}
             </button>
           </div>
@@ -294,17 +294,17 @@ export default function ProductCard({
             <button
               type="button"
               onClick={handleCartAction}
-              className={`mt-4 w-full py-3 rounded-xl text-white transition-all duration-300 transform hover:scale-105 min-h-[44px] overflow-hidden relative ${
+              className={`mt-3 sm:mt-4 w-full py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base text-white transition-all duration-300 transform active:scale-95 md:hover:scale-105 min-h-[44px] overflow-hidden relative touch-manipulation ${
                 isInCart
                   ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
                   : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
               }`}
             >
-              <span className="relative z-10 flex items-center justify-center space-x-2">
-                <ShoppingCart className="w-5 h-5" />
+              <span className="relative z-10 flex items-center justify-center space-x-1.5 sm:space-x-2">
+                <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>{isInCart ? "Remove from Cart" : "Add to Cart"}</span>
               </span>
-              <div className={`absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 ${
+              <div className={`absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none ${
                 isInCart
                   ? "bg-gradient-to-r from-red-600 to-red-700"
                   : "bg-gradient-to-r from-blue-600 to-blue-700"
@@ -315,13 +315,13 @@ export default function ProductCard({
             <button
               type="button"
               onClick={handleCheckout}
-              className="mt-3 w-full py-3 rounded-xl text-white transition-all duration-300 transform hover:scale-105 min-h-[44px] overflow-hidden relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700"
+              className="mt-2 sm:mt-3 w-full py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base text-white transition-all duration-300 transform active:scale-95 md:hover:scale-105 min-h-[44px] overflow-hidden relative bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 touch-manipulation"
             >
-              <span className="relative z-10 flex items-center justify-center space-x-2">
-                <CreditCard className="w-5 h-5" />
+              <span className="relative z-10 flex items-center justify-center space-x-1.5 sm:space-x-2">
+                <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
                 <span>Buy Now</span>
               </span>
-              <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
             </button>
           </>
         )}
@@ -331,13 +331,13 @@ export default function ProductCard({
           <button
             type="button"
             onClick={handleEdit}
-            className="mt-4 w-full py-3 rounded-xl text-white transition-all duration-300 transform hover:scale-105 min-h-[44px] overflow-hidden relative bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700"
+            className="mt-3 sm:mt-4 w-full py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base text-white transition-all duration-300 transform active:scale-95 md:hover:scale-105 min-h-[44px] overflow-hidden relative bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 touch-manipulation"
           >
-            <span className="relative z-10 flex items-center justify-center space-x-2">
-              <Edit className="w-5 h-5" />
+            <span className="relative z-10 flex items-center justify-center space-x-1.5 sm:space-x-2">
+              <Edit className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Edit Product</span>
             </span>
-            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 opacity-0 hover:opacity-100 transition-opacity duration-300"></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-purple-700 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none"></div>
           </button>
         )}
 
@@ -346,17 +346,17 @@ export default function ProductCard({
           <button
             type="button"
             onClick={handleDelete}
-            className={`mt-3 w-full py-3 rounded-xl text-white transition-all duration-300 transform hover:scale-105 min-h-[44px] overflow-hidden relative ${
+            className={`mt-2 sm:mt-3 w-full py-2.5 sm:py-3 rounded-lg sm:rounded-xl text-sm sm:text-base text-white transition-all duration-300 transform active:scale-95 md:hover:scale-105 min-h-[44px] overflow-hidden relative touch-manipulation ${
               theme === "dark"
                 ? "bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700"
                 : "bg-gradient-to-r from-gray-100 to-gray-200 text-red-500 hover:from-red-500 hover:to-red-600 hover:text-white"
             }`}
           >
-            <span className="relative z-10 flex items-center justify-center space-x-2">
-              <Trash2 className="w-5 h-5" />
+            <span className="relative z-10 flex items-center justify-center space-x-1.5 sm:space-x-2">
+              <Trash2 className="w-4 h-4 sm:w-5 sm:h-5" />
               <span>Delete</span>
             </span>
-            <div className={`absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 ${
+            <div className={`absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-300 pointer-events-none ${
               theme === "dark"
                 ? "bg-gradient-to-r from-red-600 to-red-700"
                 : "bg-gradient-to-r from-red-500 to-red-600"

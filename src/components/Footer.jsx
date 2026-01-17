@@ -10,8 +10,8 @@ export default function Footer() {
         </div>
         <div className="flex gap-4">
           <a href="https://facebook.com" target="_blank"><FaFacebook size={24} /></a>
-          <a href="https://instagram.com" target="_blank"><FaInstagram size={24} /></a>
-          <a href="https://twitter.com" target="_blank"><FaTwitter size={24} /></a>
+          <a href="https://www.instagram.com/resty_leofficial?igsh=eGEzdW83bnNhYW5s&utm_source=qr" target="_blank"><FaInstagram size={24} /></a>
+          <a href="https://x.com/re_styleofff?s=11" target="_blank"><FaTwitter size={24} /></a>
         </div>
         <div>
           📞 +995 599 123 456 | ✉️ ReStyle@gmail.com

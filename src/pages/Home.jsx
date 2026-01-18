@@ -38,9 +38,9 @@ export default function Home() {
         const fetchStats = async () => {
             try {
                 const [usersRes, productsRes, cvsRes] = await Promise.all([
-                    fetch("/api/stats/users").then(res => res.json()),
-                    fetch("/api/stats/products").then(res => res.json()),
-                    fetch("/api/stats/cvs").then(res => res.json())
+                    fetch("https://restyle-backend123.vercel.app/api/stats/users").then(res => res.json()),
+                    fetch("https://restyle-backend123.vercel.app/api/stats/products").then(res => res.json()),
+                    fetch("https://restyle-backend123.vercel.app/api/stats/cvs").then(res => res.json())
                 ]);
 
                 setStats([
@@ -62,11 +62,58 @@ export default function Home() {
         fetchStats();
     }, []);
 
-    const testimonials = [
-        { name: "Anna K.", text: "Found amazing deals on ReStyle! Love the quality and variety.", rating: 5 },
-        { name: "Mike T.", text: "Great platform for second-hand fashion. Sustainable and stylish!", rating: 5 },
-        { name: "Sara L.", text: "Easy to use, fast shipping. Highly recommend!", rating: 5 },
-    ];
+    const [testimonials, setTestimonials] = useState([]);
+    const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+
+    // Fetch testimonials
+    useEffect(() => {
+        const fetchTestimonials = async () => {
+            try {
+                const response = await fetch("https://restyle-backend123.vercel.app/api/reviews");
+                if (response.ok) {
+                    const data = await response.json();
+                    setTestimonials(data);
+                } else {
+                    // Fallback to hardcoded if API fails
+                    setTestimonials([
+                        { name: "Anna K.", text: "Found amazing deals on ReStyle! Love the quality and variety.", rating: 5 },
+                        { name: "Mike T.", text: "Great platform for second-hand fashion. Sustainable and stylish!", rating: 5 },
+                        { name: "Sara L.", text: "Easy to use, fast shipping. Highly recommend!", rating: 5 },
+                    ]);
+                }
+            } catch (error) {
+                console.error("Failed to fetch testimonials:", error);
+                // Fallback
+                setTestimonials([
+                    { name: "Anna K.", text: "Found amazing deals on ReStyle! Love the quality and variety.", rating: 5 },
+                    { name: "Mike T.", text: "Great platform for second-hand fashion. Sustainable and stylish!", rating: 5 },
+                    { name: "Sara L.", text: "Easy to use, fast shipping. Highly recommend!", rating: 5 },
+                ]);
+            }
+        };
+
+        fetchTestimonials();
+    }, []);
+
+    // Rotate testimonials every 30 seconds if more than 3
+    useEffect(() => {
+        if (testimonials.length > 3) {
+            const interval = setInterval(() => {
+                setCurrentTestimonialIndex((prev) => (prev + 3) % testimonials.length);
+            }, 30000);
+            return () => clearInterval(interval);
+        }
+    }, [testimonials.length]);
+
+    // Get current testimonials to display (up to 3)
+    const displayedTestimonials = testimonials.length > 3
+        ? testimonials.slice(currentTestimonialIndex, currentTestimonialIndex + 3)
+        : testimonials;
+
+    // Calculate average rating
+    const averageRating = testimonials.length > 0
+        ? (testimonials.reduce((sum, t) => sum + t.rating, 0) / testimonials.length).toFixed(1)
+        : 0;
 
     // Fetch featured products
     useEffect(() => {
@@ -269,7 +316,7 @@ export default function Home() {
                     What Our Customers Say
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {testimonials.map((testimonial, index) => (
+                    {displayedTestimonials.map((testimonial, index) => (
                         <div
                             key={index}
                             className={`p-8 rounded-3xl ${
@@ -292,6 +339,23 @@ export default function Home() {
                         </div>
                     ))}
                 </div>
+                {testimonials.length > 0 && (
+                    <div className="text-center mt-12">
+                        <div className={`inline-flex items-center gap-3 px-6 py-3 rounded-full ${
+                            theme === 'dark'
+                                ? 'bg-gray-800/50 border border-gray-700/50'
+                                : 'bg-white/80 border border-gray-200'
+                        } backdrop-blur-sm shadow-lg`}>
+                            <div className="flex items-center gap-1">
+                                <Star className="w-5 h-5 text-yellow-400 fill-current" />
+                                <span className="font-bold text-yellow-500 text-lg">{averageRating}</span>
+                            </div>
+                            <span className={`text-sm ${theme === 'dark' ? 'text-gray-300' : 'text-gray-600'}`}>
+                                from {testimonials.length} review{testimonials.length > 1 ? 's' : ''}
+                            </span>
+                        </div>
+                    </div>
+                )}
             </div>
 
             {/* CTA Section */}

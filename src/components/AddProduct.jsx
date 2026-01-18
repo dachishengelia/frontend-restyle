@@ -13,7 +13,8 @@ export default function AddProduct() {
     name: "",
     price: "",
     description: "",
-    category: "",
+    mainCategory: "",
+    subcategory: "",
     discount: "",
     secondhand: false,
     sizes: [],
@@ -40,7 +41,8 @@ export default function AddProduct() {
             name: product.name || "",
             price: product.price || "",
             description: product.description || "",
-            category: product.category || "",
+            mainCategory: product.mainCategory || "",
+            subcategory: product.subcategory || product.category || "",
             discount: product.discount || "",
             secondhand: product.secondhand || false,
             sizes: product.sizes || [],
@@ -148,7 +150,7 @@ export default function AddProduct() {
         );
         setMessage("Product added successfully!");
         // Reset form
-        setForm({ name: "", price: "", description: "", category: "", discount: "", secondhand: false, sizes: [], colors: [] });
+        setForm({ name: "", price: "", description: "", mainCategory: "", subcategory: "", discount: "", secondhand: false, sizes: [], colors: [] });
         setImageUrl("");
       }
       setError("");
@@ -280,25 +282,102 @@ export default function AddProduct() {
               />
             </div>
 
-            {/* Category */}
+            {/* Main Category */}
             <div className="relative">
               <label className={`block text-sm font-medium mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
                 <Tag className="inline h-4 w-4 mr-2" />
-                Category
+                Main Category
               </label>
-              <input
-                name="category"
-                value={form.category}
-                onChange={handleChange}
-                placeholder="e.g., shirt,pants..."
+              <select
+                name="mainCategory"
+                value={form.mainCategory}
+                onChange={(e) => {
+                  handleChange(e);
+                  // Reset subcategory when main category changes
+                  setForm({ ...form, mainCategory: e.target.value, subcategory: "" });
+                }}
                 className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
                   theme === "dark"
-                    ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400"
-                    : "bg-white border-gray-300 text-gray-900 placeholder-gray-500"
+                    ? "bg-gray-700 border-gray-600 text-white"
+                    : "bg-white border-gray-300 text-gray-900"
                 }`}
                 required
-              />
+              >
+                <option value="">Select main category</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Accessories">Accessories</option>
+                <option value="Shoes">Shoes</option>
+              </select>
             </div>
+
+            {/* Subcategory */}
+            {form.mainCategory && (
+              <div className="relative">
+                <label className={`block text-sm font-medium mb-2 ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                  <Tag className="inline h-4 w-4 mr-2" />
+                  Subcategory
+                </label>
+                <select
+                  name="subcategory"
+                  value={form.subcategory}
+                  onChange={handleChange}
+                  className={`w-full px-4 py-3 rounded-lg border transition-all duration-200 focus:ring-2 focus:ring-blue-500 focus:border-transparent ${
+                    theme === "dark"
+                      ? "bg-gray-700 border-gray-600 text-white"
+                      : "bg-white border-gray-300 text-gray-900"
+                  }`}
+                  required
+                >
+                  <option value="">Select subcategory</option>
+                  {form.mainCategory === "Clothing" && (
+                    <>
+                      <option value="Shirt">Shirt</option>
+                      <option value="T-Shirt">T-Shirt</option>
+                      <option value="Dress">Dress</option>
+                      <option value="Blouse">Blouse</option>
+                      <option value="Pants">Pants</option>
+                      <option value="Jeans">Jeans</option>
+                      <option value="Skirt">Skirt</option>
+                      <option value="Jacket">Jacket</option>
+                      <option value="Coat">Coat</option>
+                      <option value="Sweater">Sweater</option>
+                      <option value="Hoodie">Hoodie</option>
+                      <option value="Shorts">Shorts</option>
+                      <option value="Suit">Suit</option>
+                      <option value="Underwear">Underwear</option>
+                    </>
+                  )}
+                  {form.mainCategory === "Accessories" && (
+                    <>
+                      <option value="Bag">Bag</option>
+                      <option value="Hat">Hat</option>
+                      <option value="Belt">Belt</option>
+                      <option value="Scarf">Scarf</option>
+                      <option value="Jewelry">Jewelry</option>
+                      <option value="Watch">Watch</option>
+                      <option value="Gloves">Gloves</option>
+                      <option value="Sunglasses">Sunglasses</option>
+                      <option value="Tie">Tie</option>
+                      <option value="Wallet">Wallet</option>
+                    </>
+                  )}
+                  {form.mainCategory === "Shoes" && (
+                    <>
+                      <option value="Sneakers">Sneakers</option>
+                      <option value="Boots">Boots</option>
+                      <option value="Sandals">Sandals</option>
+                      <option value="Slippers">Slippers</option>
+                      <option value="Heels">Heels</option>
+                      <option value="Flats">Flats</option>
+                      <option value="Loafers">Loafers</option>
+                      <option value="Oxfords">Oxfords</option>
+                      <option value="Running Shoes">Running Shoes</option>
+                      <option value="Casual Shoes">Casual Shoes</option>
+                    </>
+                  )}
+                </select>
+              </div>
+            )}
 
             {/* Discount */}
             <div className="relative">
@@ -405,75 +484,95 @@ export default function AddProduct() {
                   ? "bg-gray-700 border-gray-600"
                   : "bg-gray-50 border-gray-200"
               }`}>
-                <div className="grid grid-cols-3 gap-3">
-                  {["S", "M", "L", "XL", "XXL"].map((size) => (
-                    <label key={size} className="flex items-center space-x-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={form.sizes.includes(size)}
-                        onChange={(e) => {
-                          if (e.target.checked) {
-                            setForm({
-                              ...form,
-                              sizes: [...form.sizes, size]
-                            });
-                          } else {
-                            setForm({
-                              ...form,
-                              sizes: form.sizes.filter(s => s !== size)
-                            });
-                          }
-                        }}
-                        className={`w-4 h-4 rounded border-2 transition-colors ${
-                          theme === "dark"
-                            ? "bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500"
-                            : "bg-white border-gray-300 text-blue-600 focus:ring-blue-500"
-                        }`}
-                      />
-                      <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                        {size}
-                      </span>
-                    </label>
-                  ))}
-                </div>
+                {form.mainCategory === "Clothing" && (
+                  <>
+                    <p className={`text-xs font-medium mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                      Clothing Sizes:
+                    </p>
+                    <div className="grid grid-cols-3 gap-3">
+                      {["XS", "S", "M", "L", "XL", "XXL", "XXXL"].map((size) => (
+                        <label key={size} className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={form.sizes.includes(size)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setForm({
+                                  ...form,
+                                  sizes: [...form.sizes, size]
+                                });
+                              } else {
+                                setForm({
+                                  ...form,
+                                  sizes: form.sizes.filter(s => s !== size)
+                                });
+                              }
+                            }}
+                            className={`w-4 h-4 rounded border-2 transition-colors ${
+                              theme === "dark"
+                                ? "bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500"
+                                : "bg-white border-gray-300 text-blue-600 focus:ring-blue-500"
+                            }`}
+                          />
+                          <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                            {size}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
 
-                {/* Shoe Sizes */}
-                <div className="mt-4 pt-4 border-t border-gray-300 dark:border-gray-600">
-                  <p className={`text-xs font-medium mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
-                    Shoe Sizes:
+                {form.mainCategory === "Shoes" && (
+                  <>
+                    <p className={`text-xs font-medium mb-2 ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                      Shoe Sizes (EU):
+                    </p>
+                    <div className="grid grid-cols-4 gap-2">
+                      {["35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46"].map((size) => (
+                        <label key={size} className="flex items-center space-x-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={form.sizes.includes(size)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setForm({
+                                  ...form,
+                                  sizes: [...form.sizes, size]
+                                });
+                              } else {
+                                setForm({
+                                  ...form,
+                                  sizes: form.sizes.filter(s => s !== size)
+                                });
+                              }
+                            }}
+                            className={`w-4 h-4 rounded border-2 transition-colors ${
+                              theme === "dark"
+                                ? "bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500"
+                                : "bg-white border-gray-300 text-blue-600 focus:ring-blue-500"
+                            }`}
+                          />
+                          <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
+                            {size}
+                          </span>
+                        </label>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {form.mainCategory === "Accessories" && (
+                  <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    Accessories typically don't have sizes. You can leave this empty or add custom sizes if needed.
                   </p>
-                  <div className="grid grid-cols-4 gap-2">
-                    {["40", "41", "42", "43", "44", "45"].map((size) => (
-                      <label key={size} className="flex items-center space-x-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={form.sizes.includes(size)}
-                          onChange={(e) => {
-                            if (e.target.checked) {
-                              setForm({
-                                ...form,
-                                sizes: [...form.sizes, size]
-                              });
-                            } else {
-                              setForm({
-                                ...form,
-                                sizes: form.sizes.filter(s => s !== size)
-                              });
-                            }
-                          }}
-                          className={`w-4 h-4 rounded border-2 transition-colors ${
-                            theme === "dark"
-                              ? "bg-gray-600 border-gray-500 text-blue-500 focus:ring-blue-500"
-                              : "bg-white border-gray-300 text-blue-600 focus:ring-blue-500"
-                          }`}
-                        />
-                        <span className={`text-sm font-medium ${theme === "dark" ? "text-gray-300" : "text-gray-700"}`}>
-                          {size}
-                        </span>
-                      </label>
-                    ))}
-                  </div>
-                </div>
+                )}
+
+                {!form.mainCategory && (
+                  <p className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"}`}>
+                    Please select a main category first to see available sizes.
+                  </p>
+                )}
               </div>
             </div>
 

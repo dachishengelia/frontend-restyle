@@ -29,6 +29,7 @@ import Newsletter from "./pages/Newsletter.jsx";
 import CVMarketplace from "./pages/CVMarketplace.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
+import UserProfile from "./pages/UserProfile.jsx";
 import Contact from "./pages/Contact.jsx";
 
 function getCookie(name, suffix = '') {
@@ -218,6 +219,19 @@ export default function App() {
                 element={
                   <ProductDetails
                     products={products} // 🔥 ADDED
+                    favorites={favorites}
+                    toggleFav={toggleFav}
+                    cart={cart}
+                    addToCart={addToCart}
+                    removeFromCart={removeFromCart}
+                  />
+                }
+              />
+
+              <Route
+                path="/user/:userId"
+                element={
+                  <UserProfile
                     favorites={favorites}
                     toggleFav={toggleFav}
                     cart={cart}

@@ -236,6 +236,7 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
   const [userDisliked, setUserDisliked] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [commentToDelete, setCommentToDelete] = useState(null);
+  const [showImageModal, setShowImageModal] = useState(false);
 
   // Fetch initial likes/dislikes data
   useEffect(() => {
@@ -448,17 +449,68 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
 
   if (!product) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <p className="text-gray-500 text-xl animate-pulse">Loading...</p>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 via-pink-600 to-rose-600 p-3 sm:p-4 md:p-6 relative overflow-hidden">
+        <div className="absolute inset-0 bg-black/20"></div>
+        <div className="max-w-6xl mx-auto relative z-10">
+          {/* Skeleton Product Card */}
+          <div className="rounded-2xl sm:rounded-3xl shadow-xl sm:shadow-2xl overflow-hidden flex flex-col md:flex-row backdrop-blur-sm animate-pulse"
+            style={{
+              background: 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(15px)',
+              WebkitBackdropFilter: 'blur(15px)',
+              border: '1px solid rgba(209, 213, 219, 0.3)'
+            }}
+          >
+            {/* Image Skeleton */}
+            <div className="md:w-1/2 flex items-center justify-center p-3 sm:p-5 md:p-8">
+              <div className="w-full h-[300px] sm:h-[400px] md:h-[500px] bg-gray-300 rounded-xl sm:rounded-2xl"></div>
+            </div>
+
+            {/* Details Skeleton */}
+            <div className="md:w-1/2 p-4 sm:p-6 md:p-10 flex flex-col justify-between">
+              <div>
+                <div className="h-8 sm:h-10 md:h-12 bg-gray-300 rounded-lg mb-4"></div>
+                <div className="space-y-2 mb-6">
+                  <div className="h-4 bg-gray-300 rounded w-3/4"></div>
+                  <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                  <div className="h-4 bg-gray-300 rounded w-2/3"></div>
+                </div>
+                <div className="h-6 bg-gray-300 rounded w-1/3 mb-4"></div>
+                <div className="space-y-3 mb-6">
+                  <div className="h-4 bg-gray-300 rounded w-1/4"></div>
+                  <div className="flex gap-2">
+                    <div className="h-6 bg-gray-300 rounded-full w-12"></div>
+                    <div className="h-6 bg-gray-300 rounded-full w-12"></div>
+                  </div>
+                </div>
+                <div className="h-4 bg-gray-300 rounded w-1/2 mb-6"></div>
+                <div className="flex gap-4 mb-6">
+                  <div className="h-10 bg-gray-300 rounded-lg w-20"></div>
+                  <div className="h-10 bg-gray-300 rounded-lg w-20"></div>
+                </div>
+              </div>
+              <div className="space-y-3">
+                <div className="h-12 bg-gray-300 rounded-lg"></div>
+                <div className="h-12 bg-gray-300 rounded-lg"></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-3 sm:p-4 md:p-6 relative overflow-hidden">
-      <div className="absolute inset-0 bg-black/10"></div>
-      <div className="absolute top-20 left-20 w-64 h-64 bg-white/5 rounded-full blur-3xl"></div>
-      <div className="absolute bottom-20 right-20 w-80 h-80 bg-white/3 rounded-full blur-3xl"></div>
+    <div className="min-h-screen bg-gradient-to-br from-indigo-600 via-purple-600 via-pink-600 to-rose-600 p-3 sm:p-4 md:p-6 relative overflow-hidden">
+      <div className="absolute inset-0 bg-black/20"></div>
+      {/* Enhanced floating elements */}
+      <div className="absolute top-10 left-10 w-72 h-72 bg-gradient-to-r from-blue-400/20 to-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute top-1/3 right-20 w-96 h-96 bg-gradient-to-r from-pink-400/15 to-rose-500/15 rounded-full blur-3xl animate-pulse animation-delay-1000"></div>
+      <div className="absolute bottom-20 left-1/4 w-80 h-80 bg-gradient-to-r from-indigo-400/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse animation-delay-2000"></div>
+      <div className="absolute bottom-1/4 right-10 w-64 h-64 bg-gradient-to-r from-purple-400/25 to-pink-500/25 rounded-full blur-3xl animate-pulse animation-delay-3000"></div>
+      {/* Additional geometric shapes */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-40 h-40 bg-gradient-to-r from-yellow-400/10 to-orange-500/10 rotate-45 blur-2xl animate-spin animation-duration-20000"></div>
+      <div className="absolute top-20 right-1/3 w-32 h-32 bg-gradient-to-r from-green-400/15 to-teal-500/15 rounded-full blur-2xl animate-bounce animation-delay-500"></div>
 
       <div className="max-w-6xl mx-auto relative z-10">
         {/* Product Card */}
@@ -478,30 +530,66 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
         {/* Image Section */}
         <div className="md:w-1/2 flex items-center justify-center p-3 sm:p-5 md:p-8 relative">
           <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-500/10 to-pink-500/10 rounded-xl sm:rounded-2xl"></div>
-          <div className="relative z-10 p-2 sm:p-4">
+          <div className="relative z-10 p-2 sm:p-4 cursor-pointer group" onClick={() => setShowImageModal(true)}>
             <img
               src={product.imageUrl || "https://via.placeholder.com/400x300?text=No+Image"}
               alt={product.name}
-              className="w-full h-auto rounded-xl sm:rounded-2xl object-cover max-h-[300px] sm:max-h-[400px] md:max-h-[500px] shadow-lg sm:shadow-2xl transform transition-all duration-500 md:hover:scale-105 md:hover:rotate-1"
+              className="w-full h-auto rounded-xl sm:rounded-2xl object-cover max-h-[300px] sm:max-h-[400px] md:max-h-[500px] shadow-lg sm:shadow-2xl transform transition-all duration-500 md:group-hover:scale-105 md:group-hover:rotate-1"
             />
+            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 rounded-xl sm:rounded-2xl flex items-center justify-center">
+              <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">
+                <div className="bg-white/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+                  <svg className="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7" />
+                  </svg>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
         {/* Details Section */}
         <div className="md:w-1/2 p-4 sm:p-6 md:p-10 flex flex-col justify-between">
           <div>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3 sm:mb-4 md:mb-6 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-              {product.name}
-            </h2>
+            <div className="flex flex-wrap items-center gap-2 sm:gap-3 mb-3 sm:mb-4 md:mb-6">
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                {product.name}
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {product.secondhand && (
+                  <span className="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-gradient-to-r from-orange-400 to-red-500 text-white shadow-lg">
+                    Secondhand
+                  </span>
+                )}
+                {product.discount > 0 && (
+                  <span className="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-gradient-to-r from-green-400 to-green-600 text-white shadow-lg">
+                    -{product.discount}% OFF
+                  </span>
+                )}
+                <span className="px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-semibold bg-gradient-to-r from-blue-400 to-blue-600 text-white shadow-lg">
+                  New Arrival
+                </span>
+              </div>
+            </div>
             <p className={`mb-4 sm:mb-6 md:mb-8 text-sm sm:text-base md:text-lg leading-relaxed ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
               {product.description}
             </p>
             <div className="mb-4 sm:mb-6 md:mb-8">
-              <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent mb-2">
-                {product.price} GEL
-              </p>
+              <div className="flex items-baseline gap-3 mb-2">
+                <p className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-green-500 to-blue-500 bg-clip-text text-transparent">
+                  {product.discount > 0
+                    ? Math.round(product.price * (1 - product.discount / 100))
+                    : product.price
+                  } GEL
+                </p>
+                {product.discount > 0 && (
+                  <p className="text-lg text-gray-400 line-through">
+                    {product.price} GEL
+                  </p>
+                )}
+              </div>
               <div className="flex items-center gap-2 text-sm text-gray-400">
-                <span className="w-2 h-2 bg-green-400 rounded-full"></span>
+                <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
                 <span>In Stock</span>
               </div>
             </div>
@@ -558,9 +646,12 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
               <span className={`text-xs sm:text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
                 Seller:
               </span>
-              <span className={`font-semibold text-sm sm:text-base ${theme === "dark" ? "text-gray-200" : "text-gray-800"}`}>
+              <button
+                onClick={() => navigate(`/user/${product.sellerId?._id}`)}
+                className={`font-semibold text-sm sm:text-base ${theme === "dark" ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"} transition-colors duration-200 hover:underline`}
+              >
                 {product.sellerId?.username || "Unknown"}
-              </span>
+              </button>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4 mb-4 sm:mb-6 md:mb-8">
@@ -648,34 +739,53 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
           </h3>
         </div>
 
-        <div className="mb-4">
+        <div className="mb-4 sm:mb-6">
           {comments.length === 0 ? (
-            <p className={`text-sm sm:text-base ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>No comments yet.</p>
+            <div className="text-center py-8 sm:py-12">
+              <MessageCircle className={`w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-4 ${theme === "dark" ? "text-gray-600" : "text-gray-400"} opacity-50`} />
+              <p className={`text-sm sm:text-base ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>No comments yet. Be the first to share your thoughts!</p>
+            </div>
           ) : (
-            comments.map((c) => (
-              <div
-                key={c._id || c.createdAt}
-                className={`mb-3 sm:mb-2 border-b pb-2 sm:pb-1 ${
-                  theme === "dark" ? "border-gray-600 text-gray-200" : "border-gray-200 text-gray-800"
-                }`}
-              >
-                <div className="flex items-start justify-between gap-2">
-                  <div className="flex-1 min-w-0">
-                    <span className="font-semibold text-sm sm:text-base">{c.username}:</span> <span className="text-sm sm:text-base break-words">{c.text}</span>
-                    <div className="text-[10px] sm:text-xs text-gray-400 mt-1">{new Date(c.createdAt).toLocaleString()}</div>
+            <div className="space-y-3 sm:space-y-4">
+              {comments.map((c, index) => (
+                <div
+                  key={c._id || c.createdAt}
+                  className={`p-3 sm:p-4 rounded-lg sm:rounded-xl border transition-all duration-300 hover:shadow-lg transform hover:-translate-y-1 ${
+                    theme === "dark"
+                      ? "border-gray-600/50 bg-gray-800/30 text-gray-200 hover:bg-gray-800/50"
+                      : "border-gray-200/50 bg-white/30 text-gray-800 hover:bg-white/50"
+                  }`}
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-2 mb-2">
+                        <div className={`w-8 h-8 rounded-full ${theme === "dark" ? "bg-gray-600" : "bg-gray-300"} flex items-center justify-center`}>
+                          <span className="text-xs font-bold text-white">{c.username.charAt(0).toUpperCase()}</span>
+                        </div>
+                        <button
+                          onClick={() => navigate(`/user/${c.userId}`)}
+                          className={`font-semibold text-sm sm:text-base ${theme === "dark" ? "text-blue-400 hover:text-blue-300" : "text-blue-600 hover:text-blue-700"} transition-colors duration-200 hover:underline`}
+                        >
+                          {c.username}
+                        </button>
+                        <span className="text-xs text-gray-400">{new Date(c.createdAt).toLocaleString()}</span>
+                      </div>
+                      <p className="text-sm sm:text-base break-words leading-relaxed">{c.text}</p>
+                    </div>
+                    {user && (user._id == c.userId || user.role === "admin") && (
+                      <button
+                        onClick={() => handleDeleteComment(c._id)}
+                        className="p-2 rounded-lg text-red-500 hover:bg-red-500/10 transition-all duration-200 active:scale-95 md:hover:scale-110 touch-manipulation flex-shrink-0 hover:rotate-12"
+                        title="Delete comment"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    )}
                   </div>
-                  {user && (user._id == c.userId || user.role === "admin") && (
-                    <button
-                      onClick={() => handleDeleteComment(c._id)}
-                      className="ml-2 sm:ml-4 p-2 sm:p-2 rounded-lg text-red-500 hover:bg-red-500/10 transition-colors duration-200 active:scale-95 md:hover:scale-110 touch-manipulation flex-shrink-0"
-                      title="Delete comment"
-                    >
-                      <Trash2 className="w-4 h-4 sm:w-4 sm:h-4" />
-                    </button>
-                  )}
                 </div>
-              </div>
-            ))
+              ))}
+            </div>
           )}
         </div>
 
@@ -763,6 +873,34 @@ export default function ProductDetails({ cart, addToCart, removeFromCart }) {
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Image Modal */}
+        {showImageModal && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4" onClick={() => setShowImageModal(false)}>
+            <div
+              className="absolute inset-0 bg-black/80 backdrop-blur-sm"
+              style={{
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)'
+              }}
+            ></div>
+            <div className="relative max-w-4xl max-h-[90vh] w-full transform transition-all duration-300 scale-100">
+              <img
+                src={product.imageUrl || "https://via.placeholder.com/400x300?text=No+Image"}
+                alt={product.name}
+                className="w-full h-full object-contain rounded-2xl shadow-2xl"
+              />
+              <button
+                onClick={() => setShowImageModal(false)}
+                className="absolute top-4 right-4 bg-black/50 hover:bg-black/70 text-white rounded-full p-3 transition-all duration-200 transform hover:scale-110"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
             </div>
           </div>
         )}

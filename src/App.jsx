@@ -20,7 +20,12 @@ import { CartProvider } from "./context/CartContext.jsx";
 import { ThemeProvider, ThemeContext } from "./context/ThemeContext.jsx";
 import Success from "./pages/Success.jsx";
 import Cancel from "./pages/Cancel.jsx";
-import Profile from "./pages/Profile.jsx";
+import ProfileLayout from "./pages/ProfileLayout.jsx";
+import ProfileOverview from "./pages/ProfileOverview.jsx";
+import AccountSettings from "./pages/AccountSettings.jsx";
+import MyProducts from "./pages/MyProducts.jsx";
+import MyCVs from "./pages/MyCVs.jsx";
+import Newsletter from "./pages/Newsletter.jsx";
 import CVMarketplace from "./pages/CVMarketplace.jsx";
 import ErrorBoundary from "./components/ErrorBoundary.jsx";
 import ProductDetails from "./pages/ProductDetails.jsx";
@@ -194,7 +199,13 @@ export default function App() {
                 }
               />
 
-              <Route path="/profile" element={<RequireAuth><Profile /></RequireAuth>} />
+              <Route path="/profile" element={<RequireAuth><ProfileLayout /></RequireAuth>}>
+                <Route index element={<ProfileOverview />} />
+                <Route path="settings" element={<AccountSettings />} />
+                <Route path="products" element={<MyProducts />} />
+                <Route path="cvs" element={<MyCVs />} />
+                <Route path="newsletter" element={<Newsletter />} />
+              </Route>
               <Route path="/add-cv" element={<RequireAuth><AddCVForm /></RequireAuth>} />
               <Route path="/cv-marketplace" element={<CVMarketplace />} />
               <Route path="/contact" element={<Contact />} />

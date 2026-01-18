@@ -100,130 +100,129 @@ export default function Navbar({ favoritesCount }) {
           ? 'opacity-100 translate-y-0 pointer-events-auto'
           : 'opacity-0 -translate-y-4 pointer-events-none'
       }`}>
-          <nav className="flex flex-col items-center gap-3 py-4 px-4 text-white">
-          {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="w-full p-3 rounded-lg bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border border-white/10 hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 transition-all duration-300 text-lg hover:scale-105 hover:shadow-lg group"
-            title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-          >
-            <div className="flex items-center justify-center space-x-2">
-              <span className="text-xl group-hover:rotate-12 transition-transform duration-300">
-                {theme === "light" ? "☀️" : "🌙"}
-              </span>
-              <span className="font-medium text-sm">
-                {theme === "light" ? "Light Mode" : "Dark Mode"}
-              </span>
-            </div>
-          </button>
-
-          {user && (
-            <Link
-              to="/explore"
-              className="w-full flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-            >
-              <span className="text-base group-hover:rotate-12 transition-transform duration-300">🛍️</span>
-              <span>Marketplace</span>
-            </Link>
-          )}
-
-          {/* Favorites & Cart - Only show for logged in users */}
-          {user && (
-            <div className="flex flex-col gap-2 w-full">
-              <Link
-                to="/favorites"
-                className="flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-              >
-                <span className="text-base group-hover:scale-125 transition-transform duration-300">❤️</span>
-                <span>Favorites</span>
-                {favoritesCount > 0 && (
-                  <span className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full">
-                    {favoritesCount}
-                  </span>
-                )}
-              </Link>
-              <Link
-                to="/cart"
-                className="flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-              >
-                <span className="text-base group-hover:scale-125 transition-transform duration-300">🛒</span>
-                <span>Cart</span>
-                {cart.length > 0 && (
-                  <span className="bg-gradient-to-r from-green-500 to-blue-500 text-white text-xs px-2 py-1 rounded-full">
-                    {cart.length}
-                  </span>
-                )}
-              </Link>
-            </div>
-          )}
-
-          {/* User buttons */}
-          {user ? (
-            <div className="w-full space-y-2">
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => navigate("/add-cv")}
-                  className="flex flex-col items-center gap-1 text-xs font-semibold text-white hover:text-white transition-all duration-300 px-2 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-                >
-                  <span className="text-sm group-hover:rotate-12 transition-transform duration-300">📄</span>
-                  <span>Add CV</span>
-                </button>
-                <button
-                  onClick={() => navigate("/cv-marketplace")}
-                  className="flex flex-col items-center gap-1 text-xs font-semibold text-white hover:text-white transition-all duration-300 px-2 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-                >
-                  <span className="text-sm group-hover:rotate-12 transition-transform duration-300">👥</span>
-                  <span>CV Market</span>
-                </button>
-              </div>
-
-              {role === "seller" && (
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    onClick={() => navigate("/your-products")}
-                    className="flex flex-col items-center gap-1 text-xs font-semibold text-white hover:text-white transition-all duration-300 px-2 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-                  >
-                    <span className="text-sm group-hover:rotate-12 transition-transform duration-300">📦</span>
-                    <span>Your Products</span>
-                  </button>
-                  <button
-                    onClick={() => navigate("/add-product")}
-                    className="flex flex-col items-center gap-1 text-xs font-semibold text-white hover:text-white transition-all duration-300 px-2 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-                  >
-                    <span className="text-sm group-hover:rotate-12 transition-transform duration-300">➕</span>
-                    <span>Add Product</span>
-                  </button>
-                </div>
-              )}
-
-              {role === "admin" && (
-                <button
-                  onClick={() => navigate("/admin")}
-                  className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
-                >
-                  <span className="text-sm group-hover:rotate-12 transition-transform duration-300">⚙️</span>
-                  <span>Control Panel</span>
-                </button>
-              )}
-
+          <nav className="flex flex-col gap-4 py-4 px-4 text-white max-w-xs mx-auto">
+            {/* Settings Section */}
+            <div className="w-full">
+              <h3 className="text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wide">Settings</h3>
               <button
-                onClick={signOut}
-                className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-500/30 hover:from-red-500/30 hover:to-red-600/30 hover:scale-105 hover:shadow-lg group"
+                onClick={toggleTheme}
+                className="w-full p-3 rounded-lg bg-gradient-to-r from-indigo-500/10 via-purple-500/10 to-pink-500/10 border border-white/10 hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 transition-all duration-300 text-lg hover:scale-105 hover:shadow-lg group"
+                title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
               >
-                <span className="text-sm group-hover:rotate-12 transition-transform duration-300">🚪</span>
-                <span>Sign Out</span>
+                <div className="flex items-center justify-center space-x-2">
+                  <span className="text-xl group-hover:rotate-12 transition-transform duration-300">
+                    {theme === "light" ? "☀️" : "🌙"}
+                  </span>
+                  <span className="font-medium text-sm">
+                    {theme === "light" ? "Light Mode" : "Dark Mode"}
+                  </span>
+                </div>
               </button>
             </div>
-          ) : (
-            <Link
-              to="/auth"
-              className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 px-4 py-2 rounded-lg hover:from-indigo-500/30 hover:via-purple-500/30 hover:to-pink-500/30 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20"
-            >
-              <span className="text-base">🔐</span>
-              <span>Log In / Sign Up</span>
-            </Link>
-          )}
-        </nav>
+
+            {user && (
+              <div className="w-full">
+                <h3 className="text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wide">Shop</h3>
+                <div className="space-y-2">
+                  <Link
+                    to="/explore"
+                    className="w-full flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                  >
+                    <span className="text-base group-hover:rotate-12 transition-transform duration-300">🛍️</span>
+                    <span>Marketplace</span>
+                  </Link>
+                  <Link
+                    to="/favorites"
+                    className="w-full flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                  >
+                    <span className="text-base group-hover:scale-125 transition-transform duration-300">❤️</span>
+                    <span>Favorites</span>
+                    {favoritesCount > 0 && (
+                      <span className="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-2 py-1 rounded-full">
+                        {favoritesCount}
+                      </span>
+                    )}
+                  </Link>
+                  <Link
+                    to="/cart"
+                    className="w-full flex items-center justify-center gap-2 text-sm font-semibold hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                  >
+                    <span className="text-base group-hover:scale-125 transition-transform duration-300">🛒</span>
+                    <span>Cart</span>
+                    {cart.length > 0 && (
+                      <span className="bg-gradient-to-r from-green-500 to-blue-500 text-white text-xs px-2 py-1 rounded-full">
+                        {cart.length}
+                      </span>
+                    )}
+                  </Link>
+                </div>
+              </div>
+            )}
+
+            {user ? (
+              <div className="w-full">
+                <h3 className="text-sm font-semibold text-gray-300 mb-2 uppercase tracking-wide">Account</h3>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => navigate("/add-cv")}
+                    className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                  >
+                    <span className="text-base group-hover:rotate-12 transition-transform duration-300">📄</span>
+                    <span>Add CV</span>
+                  </button>
+                  <button
+                    onClick={() => navigate("/cv-marketplace")}
+                    className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                  >
+                    <span className="text-base group-hover:rotate-12 transition-transform duration-300">👥</span>
+                    <span>CV Market</span>
+                  </button>
+                  {role === "seller" && (
+                    <>
+                      <button
+                        onClick={() => navigate("/your-products")}
+                        className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                      >
+                        <span className="text-base group-hover:rotate-12 transition-transform duration-300">📦</span>
+                        <span>Your Products</span>
+                      </button>
+                      <button
+                        onClick={() => navigate("/add-product")}
+                        className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                      >
+                        <span className="text-base group-hover:rotate-12 transition-transform duration-300">➕</span>
+                        <span>Add Product</span>
+                      </button>
+                    </>
+                  )}
+                  {role === "admin" && (
+                    <button
+                      onClick={() => navigate("/admin")}
+                      className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-white/5 border border-white/10 hover:bg-gradient-to-r hover:from-indigo-500/20 hover:via-purple-500/20 hover:to-pink-500/20 hover:scale-105 hover:shadow-lg group"
+                    >
+                      <span className="text-base group-hover:rotate-12 transition-transform duration-300">⚙️</span>
+                      <span>Control Panel</span>
+                    </button>
+                  )}
+                  <button
+                    onClick={signOut}
+                    className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white hover:text-white transition-all duration-300 px-3 py-2 rounded-lg bg-gradient-to-r from-red-500/20 to-red-600/20 border border-red-500/30 hover:from-red-500/30 hover:to-red-600/30 hover:scale-105 hover:shadow-lg group"
+                  >
+                    <span className="text-base group-hover:rotate-12 transition-transform duration-300">🚪</span>
+                    <span>Sign Out</span>
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <Link
+                to="/auth"
+                className="w-full flex items-center justify-center gap-2 text-sm font-semibold text-white bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 px-4 py-2 rounded-lg hover:from-indigo-500/30 hover:via-purple-500/30 hover:to-pink-500/30 transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 border border-white/20"
+              >
+                <span className="text-base">🔐</span>
+                <span>Log In / Sign Up</span>
+              </Link>
+            )}
+          </nav>
 
       </div>
     </header>

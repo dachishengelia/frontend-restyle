@@ -49,7 +49,7 @@ export default function Home() {
                     { label: "CV's Added", value: cvsRes.count || "0", icon: Star },
                 ]);
             } catch (error) {
-                console.error("Failed to fetch stats:", error);
+                console.error("Failed to fetch stats - endpoints may not be implemented yet:", error);
                 // Keep loading text or set defaults
                 setStats([
                     { label: "Happy Customers", value: "10,000+", icon: Users },
